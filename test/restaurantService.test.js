@@ -8,29 +8,29 @@ import Restaurant from "../models/restaurant.model.js";
 chai.use(chaiHttp);
 const { expect } = chai;
 
-describe("Restaurant Service", () => {
-  let mockRestaurants;
+export const mockRestaurants = [
+  {
+    name: "Ramen Nagi",
+    opening_hours: [{ day: "Friday", open: "09:00", close: "22:00" }],
+  },
+  {
+    name: "Ichiran",
+    opening_hours: [{ day: "Saturday", open: "09:00", close: "15:00" }],
+  },
+  {
+    name: "Din Tai Fung",
+    opening_hours: [{ day: "Sunday", open: "12:00", close: "18:00" }],
+  },
+  {
+    name: "Yakiniku Like",
+    opening_hours: [{ day: "Sunday", open: "10:00", close: "14:00" }],
+  },
+];
+
+describe("Restaurant Service", function () {
+  this.timeout(5000);
 
   beforeEach(() => {
-    mockRestaurants = [
-      {
-        name: "Ramen Nagi",
-        opening_hours: [{ day: "Friday", open: "09:00", close: "22:00" }],
-      },
-      {
-        name: "Ichiran",
-        opening_hours: [{ day: "Saturday", open: "09:00", close: "15:00" }],
-      },
-      {
-        name: "Din Tai Fung",
-        opening_hours: [{ day: "Sunday", open: "12:00", close: "18:00" }],
-      },
-      {
-        name: "Yakiniku Like",
-        opening_hours: [{ day: "Sunday", open: "10:00", close: "14:00" }],
-      },
-    ];
-
     sinon.stub(Restaurant, "find").returns(Promise.resolve(mockRestaurants));
   });
 
@@ -62,19 +62,33 @@ describe("Restaurant Service", () => {
 describe("GET /api/restaurants", function () {
   this.timeout(5000);
 
-  it("should return a list of restaurants with valid dateTime", async () => {
+  beforeEach(() => {
+    sinon.stub(Restaurant, "find").returns(Promise.resolve(mockRestaurants));
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should return a single restaurant with valid dateTime", async () => {
     const res = await chai
       .request(app)
       .get("/api/restaurants")
       .query({ dateTime: "2024-09-20T12:00:00" });
 
     expect(res).to.have.status(200);
+    expect(res.body).to.deep.equal(["Ramen Nagi"]);
     expect(res.body).to.be.an("array").that.is.not.empty;
+  });
 
-    res.body.forEach((restaurant) => {
-      expect(restaurant).to.have.all.keys("name", "opening_hours");
-      expect(restaurant.opening_hours).to.be.an("array");
-    });
+  it("should return multiple restaurant with valid dateTime", async () => {
+    const res = await chai
+      .request(app)
+      .get("/api/restaurants")
+      .query({ dateTime: "2024-09-22T13:00:00" });
+
+    expect(res).to.have.status(200);
+    expect(res.body).to.be.an("array").that.is.not.empty;
   });
 
   it("should return 400 HTTP response for invalid dateTime", async () => {

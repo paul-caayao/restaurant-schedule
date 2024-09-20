@@ -34,6 +34,7 @@ const saveRestaurants = async (restaurants) => {
 
 const getRestaurants = async (dateTime) => {
   try {
+    // No implementation to avoid duplicate entry for this iteration
     await initializeRestaurants();
 
     const { dayOfWeek, time } = parseDateTime(dateTime);

@@ -12,14 +12,12 @@ const mongoURI = process.env.MONGO_URI;
 app.use(express.json());
 app.use("/api/restaurants", restaurantRoute);
 app.get("/", (_, res) => {
-  res.send("Listing Logic Test Exam - Paul Caayao");
+  res.send("Paul Caayao - Restaurant Schedule Finder");
 });
 
 mongoose
   .connect(mongoURI)
   .then(async () => {
-    console.log("Connected to database!");
-
     app.listen(port, () => {
       console.log(`Server is running on port: ${port}`);
     });
