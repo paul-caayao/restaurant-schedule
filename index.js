@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import restaurantRoute from "./routes/restaurant.route.js";
-
+import restaurantService from "./services/restaurantService.js";
 dotenv.config();
 
 const app = express();
@@ -18,6 +18,7 @@ app.get("/", (_, res) => {
 mongoose
   .connect(mongoURI)
   .then(async () => {
+    await restaurantService.initializeRestaurants();
     app.listen(port, () => {
       console.log(`Server is running on port: ${port}`);
     });

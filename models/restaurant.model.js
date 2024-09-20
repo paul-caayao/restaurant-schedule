@@ -5,6 +5,7 @@ const restaurantSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true
   },
   opening_hours: [openingHoursSchema],
 });

@@ -11,7 +11,11 @@ const getRestaurantsController = async (req, res) => {
     const result = await restaurantService.getRestaurants(dateTime);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (error.code === 11000) {
+      console.error(`Duplicate entry for restaurant: ${restaurant.name}`);
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 
