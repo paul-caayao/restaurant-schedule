@@ -31,11 +31,38 @@ const parseOpeningHours = (openingHoursString) => {
       const openTimeFormatted = convertTo24Hour(openTime.trim());
       const closeTimeFormatted = convertTo24Hour(closeTime.trim());
 
-      return expandedDays.map((day) => ({
-        day: daysMap[day],
-        open: openTimeFormatted,
-        close: closeTimeFormatted,
-      }));
+      const parsedTimes = [];
+
+      if (closeTimeFormatted < openTimeFormatted) {
+        for (let i = 0; i < expandedDays.length; i++) {
+          const day = expandedDays[i];
+          const nextDay = expandedDays[i + 1] || getNextDay(day);
+
+          parsedTimes.push({
+            day: daysMap[day],
+            open: openTimeFormatted,
+            close: "23:59",
+          });
+
+          parsedTimes.push({
+            day: daysMap[nextDay],
+            open: "00:00",
+            close: closeTimeFormatted,
+          });
+
+          break;
+        }
+      } else {
+        expandedDays.forEach((day) => {
+          parsedTimes.push({
+            day: daysMap[day],
+            open: openTimeFormatted,
+            close: closeTimeFormatted,
+          });
+        });
+      }
+
+      return parsedTimes;
     })
     .flat();
 };
@@ -71,6 +98,11 @@ const convertTo24Hour = (time) => {
   }
 
   return `${hours.toString().padStart(2, "0")}:${minutes || "00"}`;
+};
+
+const getNextDay = (day) => {
+  const dayIndex = daysOrder.indexOf(day);
+  return daysOrder[(dayIndex + 1) % daysOrder.length];
 };
 
 const parseDateTime = (dateTime) => {

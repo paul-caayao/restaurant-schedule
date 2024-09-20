@@ -53,6 +53,13 @@ describe("Restaurant Service", function () {
     expect(result).to.have.lengthOf(2);
   });
 
+    it("should return multiple restaurants", async () => {
+    const result = await restaurantService.getRestaurants(
+      "2024-09-22T13:00:00"
+    );
+    expect(result).to.have.lengthOf(2);
+  });
+
   it("should return empty restaurant list for invalid dateTime", async () => {
     const result = await restaurantService.getRestaurants("");
     expect(result).to.have.lengthOf(0);
