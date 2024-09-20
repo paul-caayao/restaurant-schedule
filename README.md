@@ -4,7 +4,9 @@ Created a test app that can read .json file that contains restaurant data with t
 
 # Installation 
 Make sure to update the .env values for the DB credentials
-Execute script "node index.js"
+Execute script 
+"npm install"
+"node index.js"
 
 # Usage
 GET /api/restaurants
