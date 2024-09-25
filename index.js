@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGO_URI;
+const mongoURI = "mongodb+srv://paulcaayao:mA1miEWx5qmV2xgY@backenddb.zwnzo.mongodb.net/Restaurant-Schedule-Japan?retryWrites=true&w=majority&appName=BackendDB";
 
 app.use(express.json());
 app.use("/api/restaurants", restaurantRoute);
