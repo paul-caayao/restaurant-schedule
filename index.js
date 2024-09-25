@@ -7,16 +7,13 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const mongoURI = "mongodb+srv://paulcaayao:mA1miEWx5qmV2xgY@backenddb.zwnzo.mongodb.net/Restaurant-Schedule-Japan?retryWrites=true&w=majority&appName=BackendDB";
+const mongoURI = process.env.MONGO_URI;
 
 app.use(express.json());
 app.use("/api/restaurants", restaurantRoute);
 app.get("/", (_, res) => {
   res.send("Paul Caayao - Restaurant Schedule Finder");
 });
-
-console.log(mongoURI);
-
 
 mongoose
   .connect(mongoURI)
