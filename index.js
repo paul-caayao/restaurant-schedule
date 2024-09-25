@@ -15,6 +15,7 @@ app.get("/", (_, res) => {
   res.send("Paul Caayao - Restaurant Schedule Finder");
 });
 
+console.log(mongoURI);
 mongoose
   .connect(mongoURI)
   .then(async () => {
