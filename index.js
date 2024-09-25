@@ -16,6 +16,8 @@ app.get("/", (_, res) => {
 });
 
 console.log(mongoURI);
+
+
 mongoose
   .connect(mongoURI)
   .then(async () => {
