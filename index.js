@@ -11,6 +11,8 @@ const mongoURI = process.env.MONGO_URI;
 
 app.use(express.json());
 app.use("/api/restaurants", restaurantRoute);
+app.use('/favicon.ico', express.static('./images/faviconpc.ico'));
+
 app.get("/", (_, res) => {
   res.send("Paul Caayao - Restaurant Schedule Finder");
 });
